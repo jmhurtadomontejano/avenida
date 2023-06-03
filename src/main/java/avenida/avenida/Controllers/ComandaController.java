@@ -47,8 +47,17 @@ public class ComandaController {
         model.addAttribute("productos", productos);
         model.addAttribute("comanda", comanda);
         model.addAttribute("lineaComanda", lineaComanda);
+    
+        // Obtén la mesa seleccionada si existe
+        Mesa selectedMesa = null;
+        if (comanda.getMesa() != null) {
+            selectedMesa = mesaService.findById(comanda.getMesa().getId());
+        }
+        model.addAttribute("selectedMesa", selectedMesa);
+    
         return "views/Comanda/comanda-view-add";
     }
+    
 
     @PostMapping("/add")
     public String saveComanda(@ModelAttribute("comanda") Comanda comanda) {

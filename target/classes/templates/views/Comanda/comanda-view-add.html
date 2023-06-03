@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head th:replace="fragments/common-head :: common-head">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
 <h1>Listado de comandas</h1>
@@ -10,13 +9,13 @@
     <div class="form-group">
         <label for="mesa">Mesa</label>
         <select id="mesa" th:field="*{mesa.id}" class="form-control">
-            <option th:each="mesa : ${mesas}" th:value="${mesa.id}" th:text="${mesa.id}"></option>
+            <option th:each="mesa : ${mesas}" th:value="${mesa.id}" th:text="${mesa.id + ' - ' + mesa.locationUrl + ' - ' + mesa.numComensales}"></option>
         </select>
     </div>
     <div class="form-group">
         <label for="camarero">Camarero</label>
         <select id="camarero" th:field="*{idCamarero.id}" class="form-control">
-            <option th:each="camarero : ${users}" th:value="${camarero.id}" th:text="${camarero.id}"></option>
+            <option th:each="camarero : ${users}" th:value="${camarero.id}" th:text="${camarero.userName + ' - ' + camarero.id}"></option>
         </select>
     </div>
 
