@@ -47,9 +47,8 @@ public class ComandaController {
         model.addAttribute("productos", productos);
         model.addAttribute("comanda", comanda);
         model.addAttribute("lineaComanda", lineaComanda);
-        return "views/Comanda/comanda-add-view";
+        return "views/Comanda/comanda-view-add";
     }
-    
 
     @PostMapping("/add")
     public String saveComanda(@ModelAttribute("comanda") Comanda comanda) {
@@ -68,7 +67,7 @@ public class ComandaController {
     public String showEditForm(@PathVariable int id, Model model) {
         Comanda comanda = comandaService.findById(id);
         model.addAttribute("comanda", comanda);
-        return "views/Comanda/comanda-edit";
+        return "views/Comanda/comanda-view-edit";
     }
 
     @PostMapping("/edit/{id}")

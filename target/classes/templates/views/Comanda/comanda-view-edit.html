@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="fragments/common-head :: common-head">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<h1>Editar Comanda</h1>
+<div th:replace="fragments/navbar :: navbar"></div>
+<form action="#" th:action="@{/comanda/edit/{id}(id=${comanda.id})}" th:object="${comanda}" method="post">
+    <div class="row">
+        <div class="col-md-3 col-sm-6">
+            <div class="form-group">
+                <label for="id">ID Comanda</label>
+                <input type="text" id="id" th:field="*{id}" class="form-control" readonly />
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <div class="form-group">
+                <label for="mesa">ID Mesa</label>
+                <input type="text" id="mesa" th:field="*{mesa.id}" class="form-control" readonly />
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <div class="form-group">
+                <label for="camarero">ID Camarero</label>
+                <input type="text" id="camarero" th:field="*{idCamarero.id}" class="form-control" readonly />
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <div class="form-group">
+                <label for="numComensales">Número de comensales</label>
+                <input type="number" id="numComensales" th:field="*{numComensales}" class="form-control" />
+            </div>
+        </div>
+    </div>
+    <!-- Aquí puedes agregar más campos para otras propiedades de Comanda -->
+
+    <h5>Añadir Líneas de Comanda</h5>
+    <div id="lineaComandaContainer">
+        <!-- Los formularios se agregarán aquí mediante JavaScript -->
+    </div>
+    <button type="button" id="addLineaComandaButton" class="btn btn-primary">Añadir Línea de Comanda</button>
+
+    <style>
+        .form-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .form-row div {
+            flex: 1;
+        }
+    </style>
+
+    <script>
+        document.getElementById("addLineaComandaButton").addEventListener("click", function () {
+            var container = document.getElementById("lineaComandaContainer");
+
+            // Crear un nuevo formulario y agregarlo al contenedor
+            var form = document.createElement("form");
+            form.action = "/lineaComanda/add";
+            form.method = "post";
+            form.className = "form-row";
+
+            // Agregar los campos al formulario
+            var fields = ["producto", "unidades", "concepto", "estado", "importe", "iva", "total"];
+            fields.forEach(function (field) {
+                var div = document.createElement("div");
+
+                var label = document.createElement("label");
+                label.for = field;
+                label.textContent = field.charAt(0).toUpperCase() + field.slice(1);
+                div.appendChild(label);
+
+                var input;
+                if (field === "producto") {
+                    input = document.createElement("select");
+                    // Necesitarás llenar estas opciones del select con datos de tu servidor
+                    input.className = "form-control";
+                } else {
+                    input = document.createElement("input");
+                    if (field === "importe" || field === "iva" || field === "total") {
+                        input.type = "number";
+                    } else {
+                        input.type = "text";
+                    }
+                    input.className = "form-control";
+                }
+                input.id = field;
+                input.name = field;
+                div.appendChild(input);
+
+                form.appendChild(div);
+            });
+
+            // Agregar un botón de enviar al formulario
+            var submitButton = document.createElement("button");
+            submitButton.type = "submit";
+            submitButton.textContent = "Guardar";
+            submitButton.className = "btn btn-primary";
+            form.appendChild(submitButton);
+
+            container.appendChild(form);
+            
+            // Agregar un botón de eliminar al formulario
+            var deleteButton = document.createElement("button");
+            deleteButton.type = "button";
+            deleteButton.textContent = "Eliminar";
+            deleteButton.className = "btn btn-danger";
+            deleteButton.addEventListener("click", function () {
+                container.removeChild(form);
+            });
+            form.appendChild(deleteButton);
+        });
+    </script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

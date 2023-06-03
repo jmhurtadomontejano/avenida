@@ -13,7 +13,6 @@ import avenida.avenida.Modelo.Comanda;
 import avenida.avenida.Modelo.Producto;
 import avenida.avenida.Modelo.User;
 import avenida.avenida.Repositorios.LineaComandaRepository;
-import avenida.avenida.Repositorios.UserRepository;
 import avenida.avenida.Services.ComandaService;
 import avenida.avenida.Services.LineaComandaService;
 import avenida.avenida.Services.ProductoService;
@@ -25,8 +24,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 //reparaciones
 import javax.validation.Valid;
 
@@ -45,9 +42,6 @@ public class LineaComandaController {
         private UserService userService;
     
         @Autowired
-        private UserRepository userRepository;
-    
-        @Autowired
         private LineaComandaRepository lineaComandaRepository;
     
         @Autowired
@@ -61,8 +55,7 @@ public class LineaComandaController {
             lineaComanda.setComanda(comanda);
             lineaComandaService.save(lineaComanda);
             return "redirect:/LineaComanda/listado-lineaComanda";
-        }
-        
+        } 
     
         // cargar editar lineaComanda
         @GetMapping("/edit/{id}")
@@ -81,7 +74,6 @@ public class LineaComandaController {
                 return "erorr"; // Mostrar una página de error personalizada si la reparación no se encuentra
             } 
         }
-        
     
         // añadir lineaComanda
         @PostMapping("/lineaComanda/lineaComanda")
@@ -89,16 +81,6 @@ public class LineaComandaController {
             if (result.hasErrors()) {
                 return "lineaComanda";
             }
-    
-            UUID userId = lineaComanda.getUser().getId();
-            Optional<User> optionalUser = userRepository.findById(userId);
-    
-            if (!optionalUser.isPresent()) {
-                return "error";
-            }
-    
-            User user = optionalUser.get();
-            lineaComanda.setUser(user);
             lineaComandaRepository.save(lineaComanda);
             return "success";
         }

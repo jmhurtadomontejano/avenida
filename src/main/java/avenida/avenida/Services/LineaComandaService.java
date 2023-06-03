@@ -34,9 +34,8 @@ public class LineaComandaService {
 
     public LineaComanda update(int id, LineaComanda lineaComanda) {
         LineaComanda existinglineaComanda = findById(id);
-        existinglineaComanda.setUser(lineaComanda.getUser());
         existinglineaComanda.setProducto(lineaComanda.getProducto());
-        existinglineaComanda.setDescripcion(lineaComanda.getDescripcion());
+        existinglineaComanda.setUnidades(lineaComanda.getUnidades());
         existinglineaComanda.setImporte(lineaComanda.getImporte());
         return lineaComandaRepository.save(existinglineaComanda);
     }

@@ -26,15 +26,11 @@ public class LineaComanda {
     @JoinColumn(name = "id_producto", nullable = false)
     private Producto producto;
 
-    @ManyToOne
-    @JoinColumn(name = "id_user", nullable = false)
-    private User user;
-
     @Column(name = "concepto")
     private String concepto;
 
-    @Column(name = "descripcion")
-    private String descripcion;
+    @Column(name = "unidades")
+    private int unidades;
 
     @Column(name = "estado")
     private String estado;
@@ -61,19 +57,20 @@ public class LineaComanda {
     public LineaComanda() {
     }
 
-    public LineaComanda(int id, Producto producto, User user, String concepto, String descripcion, String estado,
+    public LineaComanda(int id, Comanda comanda, Producto producto, String concepto, int unidades, String estado,
             double importe, int iva, double total) {
         this.id = id;
+        this.comanda = comanda;
         this.producto = producto;
-        this.user = user;
         this.concepto = concepto;
-        this.descripcion = descripcion;
+        this.unidades = unidades;
         this.estado = estado;
         this.importe = importe;
         this.iva = iva;
         this.total = total;
     }
-
+    
+//Getter y setter
     public int getId() {
         return id;
     }
@@ -90,14 +87,6 @@ public class LineaComanda {
         this.producto = producto;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public String getConcepto() {
         return concepto;
     }
@@ -106,12 +95,12 @@ public class LineaComanda {
         this.concepto = concepto;
     }
 
-    public String getDescripcion() {
-        return descripcion;
+    public int getUnidades() {
+        return unidades;
     }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public void setUnidades(int unidades) {
+        this.unidades = unidades;
     }
 
     public String getEstado() {
@@ -145,12 +134,11 @@ public class LineaComanda {
     public void setTotal(double total) {
         this.total = total;
     }
-
+//ToString
     @Override
     public String toString() {
-        return "LineaComanda [id=" + id + ", producto=" + producto + ", user=" + user + ", concepto=" + concepto
-                + ", descripcion=" + descripcion + ", estado=" + estado + ", importe=" + importe + ", iva=" + iva
-                + ", total=" + total + "]";
+        return "LineaComanda [id=" + id + ", comanda=" + comanda + ", producto=" + producto + ", concepto=" + concepto
+                + ", unidades=" + unidades + ", estado=" + estado + ", importe=" + importe + ", iva=" + iva + ", total="
+                + total + "]";
     }
-
 }
