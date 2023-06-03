@@ -7,8 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import avenida.avenida.Modelo.Comanda;
 
 
-public interface ComandaRepository extends JpaRepository<Comanda, UUID> {
-   Optional<Comanda> findById(int id);
+public interface ComandaRepository extends JpaRepository<Comanda, Integer> {
+   Optional<Comanda> findById(UUID id);
 
 List<Comanda> findByMesa(String mesa);
   }

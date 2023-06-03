@@ -5,7 +5,7 @@
 <h1>Listado de comandas</h1>
 <div th:replace="fragments/navbar :: navbar"></div>
 <div class="container">
-    <a href="#" class="btn btn-primary my-3" data-toggle="modal" data-target="#addEventModal">Agregar comanda</a>
+    <button type="button" class="btn btn-primary my-3" onclick="location.href='/comanda/add'">Agregar Comanda</button>
     <button type="button" class="btn btn-primary my-3" onclick="location.href='/hello'">Volver a Home</button>
     <table class="table table-striped">
         <thead class="thead-dark">

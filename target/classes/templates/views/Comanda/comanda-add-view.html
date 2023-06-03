@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="fragments/common-head :: common-head"></head>
+<body>
+<h1>Listado de comandas</h1>
+<div th:replace="fragments/navbar :: navbar"></div>
+<form action="#" th:action="@{/comanda/add}" th:object="${comanda}" method="post">
+    <div class="form-group">
+        <label for="mesa">Mesa</label>
+        <select id="mesa" th:field="*{mesa.id}">
+            <option th:each="mesa : ${mesas}" th:value="${mesa.id}" th:text="${mesa.id}"></option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="camarero">Camarero</label>
+        <select id="camarero" th:field="*{idCamarero.id}">
+            <option th:each="camarero : ${users}" th:value="${camarero.id}" th:text="${camarero.id}"></option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="producto">Producto</label>
+        <select id="producto" th:field="*{lineaComandas[0].id}">
+            <option th:each="producto : ${productos}" th:value="${producto.id}" th:text="${producto.id}"></option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="numComensales">Número de comensales</label>
+        <input type="number" id="numComensales" th:field="*{numComensales}" />
+    </div>
+    <!-- Here you may want to add more fields for other properties of Comanda -->
+    <button type="submit">Guardar Comanda</button>
+</form><br>
+<form>
+    <div th:each="lineaComanda, stat : *{lineaComandas}">
+        <label th:for="${'lineaComandas[' + stat.index + '].concepto'}">Concept:</label><br>
+        <input type="text" th:id="${'lineaComandas[' + stat.index + '].concepto'}" th:name="${'lineaComandas[' + stat.index + '].concepto'}" th:field="*{lineaComandas[__${stat.index}__].concepto}"><br>
+        <label th:for="${'lineaComandas[' + stat.index + '].descripcion'}">Description:</label><br>
+        <input type="text" th:id="${'lineaComandas[' + stat.index + '].descripcion'}" th:name="${'lineaComandas[' + stat.index + '].descripcion'}" th:field="*{lineaComandas[__${stat.index}__].descripcion}"><br>
+        <label th:for="${'lineaComandas[' + stat.index + '].estado'}">State:</label><br>
+        <input type="text" th:id="${'lineaComandas[' + stat.index + '].estado'}" th:name="${'lineaComandas[' + stat.index + '].estado'}" th:field="*{lineaComandas[__${stat.index}__].estado}"><br>
+        <label th:for="${'lineaComandas[' + stat.index + '].importe'}">Amount:</label><br>
+        <input type="number" th:id="${'lineaComandas[' + stat.index + '].importe'}" th:name="${'lineaComandas[' + stat.index + '].importe'}" th:field="*{lineaComandas[__${stat.index}__].importe}"><br>
+        <label th:for="${'lineaComandas[' + stat.index + '].iva'}">IVA:</label><br>
+        <input type="number" th:id="${'lineaComandas[' + stat.index + '].iva'}" th:name="${'lineaComandas[' + stat.index + '].iva'}" th:field="*{lineaComandas[__${stat.index}__].iva}"><br>
+        <label th:for="${'lineaComandas[' + stat.index + '].total'}">Total:</label><br>
+        <input type="number" th:id="${'lineaComandas[' + stat.index + '].total'}" th:name="${'lineaComandas[' + stat.index + '].total'}" th:field="*{lineaComandas[__${stat.index}__].total}"><br>
+        <label th:for="${'lineaComandas[' + stat.index + '].id_producto'}">Product:</label><br>
+        <select th:id="${'lineaComandas[' + stat.index + '].id_producto'}" th:name="${'lineaComandas[' + stat.index + '].id_producto'}" th:field="*{lineaComandas[__${stat.index}__].idProducto}">
+            <option th:each="producto : ${productos}" th:value="${producto.id}" th:text="${producto.nombre}"></option>
+        </select><br>
+    </div>
+    <button type="submit">Create</button>
+</form>
+</body>
+</html>

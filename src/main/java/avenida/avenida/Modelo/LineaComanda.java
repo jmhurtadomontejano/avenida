@@ -8,10 +8,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import java.time.LocalDate;
-import java.math.BigDecimal;
-import org.springframework.format.annotation.DateTimeFormat;
 //Reparaciones
 @Entity
 @Table(name = "lineaComanda")
@@ -30,13 +26,10 @@ public class LineaComanda {
     @JoinColumn(name = "id_user", nullable = false)
     private User user;
 
-    @Column(name = "fecha_entrada")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate fecha;
-
-    @Column(name = "fecha_salida")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate fechaSalida;
+    // Relación con la Comanda
+    @ManyToOne
+    @JoinColumn(name = "id_comanda", nullable = false)
+    private Comanda comanda;
 
     @Column(name = "concepto")
     private String concepto;
@@ -48,25 +41,28 @@ public class LineaComanda {
     private String estado;
 
     @Column(name = "importe")
-    private BigDecimal importe;
+    private double importe;
 
     @Column(name = "iva")
-    private BigDecimal iva;
+    private int iva;
 
     @Column(name = "total")
-    private BigDecimal total;
+    private double total;
+
+    // getter y setter para Comanda
+    public Comanda getComanda() {
+        return comanda;
+    }
 
 //Constructors
     public LineaComanda() {
     }
 
-    public LineaComanda(int id, Producto producto, User user, LocalDate fecha, LocalDate fechaSalida, String concepto,
-            String descripcion, String estado, BigDecimal importe, BigDecimal iva, BigDecimal total) {
+    public LineaComanda(int id, Producto producto, User user, String concepto, String descripcion, String estado,
+            double importe, int iva, double total) {
         this.id = id;
         this.producto = producto;
         this.user = user;
-        this.fecha = fecha;
-        this.fechaSalida = fechaSalida;
         this.concepto = concepto;
         this.descripcion = descripcion;
         this.estado = estado;
@@ -83,11 +79,11 @@ public class LineaComanda {
         this.id = id;
     }
 
-    public Producto getproducto() {
+    public Producto getProducto() {
         return producto;
     }
 
-    public void setproducto(Producto producto) {
+    public void setProducto(Producto producto) {
         this.producto = producto;
     }
 
@@ -95,24 +91,8 @@ public class LineaComanda {
         return user;
     }
 
-    public void setUser(User uuid) {
-        this.user = uuid;
-    }
-
-    public LocalDate getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(LocalDate fecha) {
-        this.fecha = fecha;
-    }
-
-    public LocalDate getFechaSalida() {
-        return fechaSalida;
-    }
-
-    public void setFechaSalida(LocalDate fechaSalida) {
-        this.fechaSalida = fechaSalida;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getConcepto() {
@@ -139,34 +119,35 @@ public class LineaComanda {
         this.estado = estado;
     }
 
-    public BigDecimal getImporte() {
+    public double getImporte() {
         return importe;
     }
 
-    public void setImporte(BigDecimal importe) {
+    public void setImporte(double importe) {
         this.importe = importe;
     }
 
-    public BigDecimal getIva() {
+    public int getIva() {
         return iva;
     }
 
-    public void setIva(BigDecimal iva) {
+    public void setIva(int iva) {
         this.iva = iva;
     }
 
-    public BigDecimal getTotal() {
+    public double getTotal() {
         return total;
     }
 
-    public void setTotal(BigDecimal total) {
+    public void setTotal(double total) {
         this.total = total;
     }
 
-//Getters & setters
-
+    @Override
+    public String toString() {
+        return "LineaComanda [id=" + id + ", producto=" + producto + ", user=" + user + ", concepto=" + concepto
+                + ", descripcion=" + descripcion + ", estado=" + estado + ", importe=" + importe + ", iva=" + iva
+                + ", total=" + total + "]";
+    }
 
 }
-
-    
-
