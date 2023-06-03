@@ -12,7 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-//bicicleta
+//producto
 @Table(name = "producto")
 @Entity
 public class Producto {

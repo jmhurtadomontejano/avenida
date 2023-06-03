@@ -8,6 +8,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.core.JsonProcessingException;
+
+
 import avenida.avenida.Modelo.Comanda;
 import avenida.avenida.Modelo.LineaComanda;
 import avenida.avenida.Modelo.Mesa;
@@ -33,18 +40,38 @@ public class ComandaController {
     @Autowired
     private ProductoService productoService;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @GetMapping("/view-add")
     public String addComanda(Model model) {
+        // Recuperar todos los objetos necesarios del servicio
         List<Mesa> mesas = mesaService.findAll();
         List<User> users = userService.findAll();
         List<Producto> productos = productoService.findAll();
+        // Crear una nueva comanda y una nueva línea de comanda y vincularlas
         Comanda comanda = new Comanda();
+        comanda.setDate(new java.util.Date());
+        comanda.setHour(java.time.LocalTime.now());
         LineaComanda lineaComanda = new LineaComanda();
         lineaComanda.setComanda(comanda);
         comanda.getLineaComandas().add(lineaComanda);
+
+        // Intentar convertir la lista de productos a una cadena JSON
+        ObjectMapper mapper = new ObjectMapper();
+       // ArrayNode productosJson = mapper.valueToTree(productos);
+       String productosJson = null;
+            try {
+                productosJson = mapper.writeValueAsString(productos);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+        System.out.println("Productos en JSON: " + productosJson);
+
+        // Añadir todos los atributos necesarios al modelo
         model.addAttribute("mesas", mesas);
         model.addAttribute("users", users);
-        model.addAttribute("productos", productos);
+        model.addAttribute("productosJson", productosJson);
         model.addAttribute("comanda", comanda);
         model.addAttribute("lineaComanda", lineaComanda);
     
@@ -54,11 +81,9 @@ public class ComandaController {
             selectedMesa = mesaService.findById(comanda.getMesa().getId());
         }
         model.addAttribute("selectedMesa", selectedMesa);
-    
         return "views/Comanda/comanda-view-add";
     }
     
-
     @PostMapping("/add")
     public String saveComanda(@ModelAttribute("comanda") Comanda comanda) {
         comandaService.save(comanda);
@@ -84,4 +109,11 @@ public class ComandaController {
         comandaService.save(comanda); // Asegúrate de que tu método save también puede actualizar
         return "redirect:/comanda/listado";
     }
+
+    @GetMapping("/delete/{id}")
+    public String deleteComanda(@PathVariable int id) {
+    comandaService.delete(id);
+    return "redirect:/comanda/listado";
+}
+
 }

@@ -36,4 +36,9 @@ public class ComandaService {
             throw new RuntimeException("Comanda no encontrada con el ID: " + id);
         }
     }
+
+   // eliminar una comanda por ID
+    public void delete(int id) {
+        comandaRepository.deleteById(id);
+    }
 }

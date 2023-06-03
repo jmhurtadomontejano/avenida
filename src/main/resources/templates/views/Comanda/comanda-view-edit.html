@@ -40,7 +40,7 @@
         <!-- Los formularios se agregarán aquí mediante JavaScript -->
     </div>
     <button type="button" id="addLineaComandaButton" class="btn btn-primary">Añadir Línea de Comanda</button>
-
+    <a th:href="@{/comanda/delete/{id}(id=${comanda.id})}" class="btn btn-danger">Eliminar</a>
     <style>
         .form-row {
             display: flex;
@@ -53,6 +53,20 @@
             flex: 1;
         }
     </style>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var productos = [];
+    try {
+        productos = JSON.parse(/*[[${productosJson}]]*/ '[]');
+    } catch (error) {
+        console.error("Error parsing productosJson:", error);
+    }
+    /*]]>*/
+</script>
+
+<script>
+    console.log(productos);
+</script>
 
     <script>
         document.getElementById("addLineaComandaButton").addEventListener("click", function () {
@@ -116,6 +130,5 @@
         });
     </script>
 
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -17,6 +17,10 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "comanda")
@@ -38,6 +42,8 @@ public class Comanda {
     @JoinColumn(name = "IdCamarero")
     private User idCamarero;
 
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
     @Column(name = "Date")
     private java.util.Date date;
 
@@ -58,18 +64,18 @@ public class Comanda {
     }
 
 // Constructor con parámetros
-    public Comanda(int id, Set<LineaComanda> lineaComandas, Mesa mesa, User idCamarero, Date date, LocalTime hour,
-        Date registryDate, Double importeComanda, int numComensales) {
-        this.id = id;
-        this.lineaComandas = lineaComandas;
-        this.mesa = mesa;
-        this.idCamarero = idCamarero;
-        this.date = date;
-        this.hour = hour;
-        this.registryDate = registryDate;
-        this.importeComanda = importeComanda;
-        this.numComensales = numComensales;
-    } 
+public Comanda(int id, Set<LineaComanda> lineaComandas, Mesa mesa, User idCamarero, Date date, LocalTime hour,
+Date registryDate, Double importeComanda, int numComensales) {
+this.id = id;
+this.lineaComandas = lineaComandas;
+this.mesa = mesa;
+this.idCamarero = idCamarero;
+this.date = date;
+this.hour = hour;
+this.registryDate = registryDate;
+this.importeComanda = importeComanda;
+this.numComensales = numComensales;
+}
 
 // Getters y Setters
     public int getId() {
@@ -144,10 +150,10 @@ public class Comanda {
         this.numComensales = numComensales;
     }
 //ToString
-@Override
-public String toString() {
-    return "Comanda [id=" + id + ", mesa=" + mesa + ", idCamarero=" + idCamarero + ", date=" + date + ", hour="
-            + hour + ", registryDate=" + registryDate + ", importeComanda=" + importeComanda + ", numComensales="
-            + numComensales + ", lineaComandas=" + lineaComandas + "]";
-}
+    @Override
+    public String toString() {
+        return "Comanda [id=" + id + ", mesa=" + mesa + ", idCamarero=" + idCamarero + ", date=" + date + ", hour="
+                + hour + ", registryDate=" + registryDate + ", importeComanda=" + importeComanda + ", numComensales="
+                + numComensales + ", lineaComandas=" + lineaComandas + "]";
+    }
 }
