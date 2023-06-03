@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="fragments/common-head :: common-head"></head>
+<body>
+<h1>Listado de Mesa</h1>
+<div th:replace="fragments/navbar :: navbar"></div>
+<div class="container">
+    <a href="/mesa/agregarMesa" class="btn btn-primary my-3">Agregar mesa</a>
+    <button type="button" class="btn btn-primary my-3" onclick="location.href='/hello'">volver a Home</button>
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>Id</th>
+                <th>Numero Comensales</th>
+                <th>Ubicacion</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr th:each="mesa : ${listaMesas}">
+            <td th:text="${mesa.id}"></td>
+            <td th:text="${mesa.numComensales}"></td>
+            <td th:text="${mesa.locationUrl}"></td>
+            <td>
+                <a th:href="@{/mesa/edit-mesa/{id}(id=${mesa.id})}" class="btn btn-warning">Editar</a>
+            </td> 
+             
+             <!-- Columna para el botón Eliminar -->
+             <td>
+                <form th:action="@{'/mesa/delete/' + ${mesa.id}}" method="post">
+                    <input type="hidden" name="_method" value="delete" />
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                </form>
+            </td>                              
+        </tr>
+        </tbody>
+    </table>
+    
+</div>
+
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="fragments/common-head :: common-head">
+</head>
+<body>
+    <!-- Fragmento de la barra de navegación -->
+    <div th:replace="fragments/navbar :: navbar"></div>
+
+    <div class="container">
+        <h1>Editar Mesa </h1>
+        <form th:action="@{/mesa/edit-mesa/{id}(id=${mesa.id})}" method="post" th:object="${mesa}">
+            <input class="col-12" type="text" name="id" id="userId" th:value="${mesa.id}" readonly />
+            <div class="form-group">
+                <label for="name">numComensales:</label>
+                <input type="number" id="numComensales" name="numComensales" th:value="${mesa.id}" step="0.01" class="form-control" />
+            </div>
+           
+            <div class="form-group">
+                <label for="locationUrl">URL del lugar:</label>
+                <input type="text" id="locationUrl" name="locationUrl" th:value="${mesa.locationUrl}" class="form-control" />
+            </div>
+            <button type="submit" class="btn btn-success">Actualizar Mesa</button>
+            <a href="/mesa/listado-mesa" class="btn btn-primary">Volver al listado</a>
+        </div>
+    </div>
+        </form>
+            <!-- Botón para eliminar mesa-->
+            <div class="col-md-6 col-12 mb-3"> <!-- Ajustar el contenedor del botón de eliminar -->
+                <form th:action="@{'/mesa/delete/' + ${mesa.id}}" method="post">
+                    <input type="hidden" name="_method" value="delete" />
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                </form>
+            </div>
+    </div>
+</body>
+</html>

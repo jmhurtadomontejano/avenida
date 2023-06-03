@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="fragments/common-head :: common-head"></head>
+<body>
+<h1>Lista de Productos</h1>
+<div th:replace="fragments/navbar :: navbar"></div>
+<div class="container">
+    <a href="/producto/agregarProducto" class="btn btn-primary my-3">Agregar producto</a>
+    <button type="button" class="btn btn-primary my-3" onclick="location.href='/hello'">volver a Home</button>
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>Nombre del Producto</th>
+                <th>Precio del Producto</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr th:each="producto : ${productos}">
+            <td th:text="${producto.nombre}"></td>
+            <td th:text="${producto.precio}"></td>
+            <td>
+                <a th:href="@{/producto/edit-producto/{id}(id=${producto.id})}" class="btn btn-warning">Editar</a>
+            </td>
+            <td>
+               
+                </form>
+            </td>                              
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
