@@ -1,32 +1,25 @@
 package avenida.avenida.Services;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import avenida.avenida.Modelo.Comanda;
 import avenida.avenida.Modelo.LineaComanda;
 import avenida.avenida.Repositorios.ComandaRepository;
 
-//importar exceptions
-import avenida.avenida.Exceptions.ResourceNotFoundException;
-
 @Service
 public class ComandaService {
 
     @Autowired
-    private ComandaRepository comandaRepository;
+    private ComandaRepository comandaRepository; // Inyectar ComandaRepository
 
     // guardar comandas
     public Comanda save(Comanda comanda) {
         for (LineaComanda lineaComanda : comanda.getLineaComandas()) {
             // Aquí puedes realizar cualquier validación o configuración adicional en cada LineaComanda
         }
-        return comandaRepository.save(comanda);
+        return comandaRepository.save(comanda); // Usar la instancia inyectada para llamar al método save
     }
 
     // encontrar todas las comandas

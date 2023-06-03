@@ -6,38 +6,37 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Table;
 
-import org.springframework.context.annotation.ComponentScan;
-//events
-
-@ComponentScan
 @Entity
 @Table(name = "comanda")
 public class Comanda {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "comanda", fetch = FetchType.LAZY)
+    private Set<LineaComanda> lineaComandas = new HashSet<>();    
+    
     @ManyToOne
     @JoinColumn(name = "IdMesa")
     private Mesa mesa;
 
-   
     @ManyToOne
     @JoinColumn(name = "IdCamarero")
     private User idCamarero;
-
 
     @Column(name = "Date")
     private java.util.Date date;
@@ -54,19 +53,15 @@ public class Comanda {
     @Column(name = "NumComensales")
     private int numComensales;
 
-    //La anotación @OneToMany significa que una Comanda puede tener muchas LineaComandas. La anotación @JoinColumn especifica la columna en la tabla linea_comanda que se usa para la relación.
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "comanda_id")
-    private List<LineaComanda> lineaComandas = new ArrayList<>();
-
 // Constructor vacío
     public Comanda() {
     }
 
 // Constructor con parámetros
-    public Comanda(int id, Mesa mesa, User idCamarero, Date date, LocalTime hour, Date registryDate,
-            Double importeComanda, int numComensales, List<LineaComanda> lineaComandas) {
+    public Comanda(int id, Set<LineaComanda> lineaComandas, Mesa mesa, User idCamarero, Date date, LocalTime hour,
+        Date registryDate, Double importeComanda, int numComensales) {
         this.id = id;
+        this.lineaComandas = lineaComandas;
         this.mesa = mesa;
         this.idCamarero = idCamarero;
         this.date = date;
@@ -74,8 +69,7 @@ public class Comanda {
         this.registryDate = registryDate;
         this.importeComanda = importeComanda;
         this.numComensales = numComensales;
-        this.lineaComandas = lineaComandas;
-    }
+    } 
 
 // Getters y Setters
     public int getId() {
@@ -84,6 +78,14 @@ public class Comanda {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public Set<LineaComanda> getLineaComandas() {
+        return lineaComandas;
+    }
+
+    public void setLineaComandas(Set<LineaComanda> lineaComandas) {
+        this.lineaComandas = lineaComandas;
     }
 
     public Mesa getMesa() {
@@ -141,20 +143,11 @@ public class Comanda {
     public void setNumComensales(int numComensales) {
         this.numComensales = numComensales;
     }
-
-    public List<LineaComanda> getLineaComandas() {
-        return lineaComandas;
-    }
-
-    public void setLineaComandas(List<LineaComanda> lineaComandas) {
-        this.lineaComandas = lineaComandas;
-    }
 //ToString
-    @Override
-    public String toString() {
-        return "Comanda [id=" + id + ", mesa=" + mesa + ", idCamarero=" + idCamarero + ", date=" + date + ", hour="
-                + hour + ", registryDate=" + registryDate + ", importeComanda=" + importeComanda + ", numComensales="
-                + numComensales + ", lineaComandas=" + lineaComandas + "]";
-    }
-
+@Override
+public String toString() {
+    return "Comanda [id=" + id + ", mesa=" + mesa + ", idCamarero=" + idCamarero + ", date=" + date + ", hour="
+            + hour + ", registryDate=" + registryDate + ", importeComanda=" + importeComanda + ", numComensales="
+            + numComensales + ", lineaComandas=" + lineaComandas + "]";
+}
 }

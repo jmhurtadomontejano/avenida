@@ -9,10 +9,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import avenida.avenida.Modelo.LineaComanda;
+import avenida.avenida.Modelo.Comanda;
 import avenida.avenida.Modelo.Producto;
 import avenida.avenida.Modelo.User;
 import avenida.avenida.Repositorios.LineaComandaRepository;
 import avenida.avenida.Repositorios.UserRepository;
+import avenida.avenida.Services.ComandaService;
 import avenida.avenida.Services.LineaComandaService;
 import avenida.avenida.Services.ProductoService;
 import avenida.avenida.Services.UserService;
@@ -32,10 +34,13 @@ import javax.validation.Valid;
 @RequestMapping("/lineaComanda")
 public class LineaComandaController {
   
-    
+    // Inyecciones de dependencias
         @Autowired
         private LineaComandaService lineaComandaService;
     
+        @Autowired
+        private ComandaService comandaService;  
+
         @Autowired
         private UserService userService;
     
@@ -50,9 +55,14 @@ public class LineaComandaController {
     
         @PostMapping("/lineaComanda")
         public String createLineaComanda(@ModelAttribute LineaComanda lineaComanda) {
+            Comanda comanda = comandaService.findById(lineaComanda.getComanda().getId());  // Usar la instancia inyectada para llamar al método
+    
+            // Configura la comanda en la LineaComanda
+            lineaComanda.setComanda(comanda);
             lineaComandaService.save(lineaComanda);
             return "redirect:/LineaComanda/listado-lineaComanda";
         }
+        
     
         // cargar editar lineaComanda
         @GetMapping("/edit/{id}")

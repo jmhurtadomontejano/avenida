@@ -8,7 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-//Reparaciones
+//LineaComandas
 @Entity
 @Table(name = "lineaComanda")
 public class LineaComanda {
@@ -19,17 +19,16 @@ public class LineaComanda {
     private int id;
 
     @ManyToOne
+    @JoinColumn(name = "id_comanda", nullable = false)
+    private Comanda comanda;
+
+    @ManyToOne
     @JoinColumn(name = "id_producto", nullable = false)
     private Producto producto;
 
     @ManyToOne
     @JoinColumn(name = "id_user", nullable = false)
     private User user;
-
-    // Relación con la Comanda
-    @ManyToOne
-    @JoinColumn(name = "id_comanda", nullable = false)
-    private Comanda comanda;
 
     @Column(name = "concepto")
     private String concepto;
@@ -52,6 +51,10 @@ public class LineaComanda {
     // getter y setter para Comanda
     public Comanda getComanda() {
         return comanda;
+    }
+
+    public void setComanda(Comanda comanda) {
+        this.comanda = comanda;
     }
 
 //Constructors

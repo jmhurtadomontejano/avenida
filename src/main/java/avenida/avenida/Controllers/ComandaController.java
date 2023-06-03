@@ -33,19 +33,23 @@ public class ComandaController {
     @Autowired
     private ProductoService productoService;
 
-    @GetMapping("/add")
+    @GetMapping("/view-add")
     public String addComanda(Model model) {
         List<Mesa> mesas = mesaService.findAll();
         List<User> users = userService.findAll();
         List<Producto> productos = productoService.findAll();
         Comanda comanda = new Comanda();
-        comanda.getLineaComandas().add(new LineaComanda()); // Añade una LineaComanda vacía
+        LineaComanda lineaComanda = new LineaComanda();
+        lineaComanda.setComanda(comanda);
+        comanda.getLineaComandas().add(lineaComanda);
         model.addAttribute("mesas", mesas);
         model.addAttribute("users", users);
         model.addAttribute("productos", productos);
         model.addAttribute("comanda", comanda);
+        model.addAttribute("lineaComanda", lineaComanda);
         return "views/Comanda/comanda-add-view";
     }
+    
 
     @PostMapping("/add")
     public String saveComanda(@ModelAttribute("comanda") Comanda comanda) {
