@@ -26,46 +26,79 @@
             <button type="submit">Guardar Comanda</button>
         </form><br>
         <h2>Añadir Lineas de Comanda</h2>
-        <div th:each="lineaComanda, stat : *{lineaComandas}">
-            <form action="#" th:action="@{/lineaComanda/add}" th:object="${lineaComanda}" method="post">
-                <div class="form-group">
-                    <label for="concepto">Concepto</label>
-                    <input type="text" id="concepto" th:field="*{concepto}" />
-                </div>
-                <div class="form-group">
-                    <label for="descripcion">Descripción</label>
-                    <input type="text" id="descripcion" th:field="*{descripcion}" />
-                </div>
-                <div class="form-group">
-                    <label for="estado">Estado</label>
-                    <input type="text" id="estado" th:field="*{estado}" />
-                </div>
-                <div class="form-group">
-                    <label for="importe">Importe</label>
-                    <input type="number" id="importe" th:field="*{importe}" />
-                </div>
-                <div class="form-group">
-                    <label for="iva">IVA</label>
-                    <input type="number" id="iva" th:field="*{iva}" />
-                </div>
-                <div class="form-group">
-                    <label for="total">Total</label>
-                    <input type="number" id="total" th:field="*{total}" />
-                </div>
-                <div class="form-group">
-                    <label for="producto">Producto</label>
-                    <select id="producto" th:field="*{idProducto.id}">
-                        <option th:each="producto : ${productos}" th:value="${producto.id}" th:text="${producto.id}"></option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="usuario">Usuario</label>
-                    <select id="usuario" th:field="*{idUser.id}">
-                        <option th:each="usuario : ${users}" th:value="${usuario.id}" th:text="${usuario.id}"></option>
-                    </select>
-                </div>
-                <button type="submit">Guardar Linea de Comanda</button>
-            </form><br>
+        <div id="lineaComandaContainer">
+            <!-- JavaScript will append forms here -->
         </div>
+        <button type="button" id="addLineaComandaButton">Añadir Linea de Comanda</button>
+        
+        <style>
+            .form-row {
+                display: flex;
+                gap: 10px;
+                align-items: center;
+                margin-bottom: 10px;
+            }
+            .form-row div {
+                flex: 1;
+            }
+        </style>
+        
+        <script>
+        document.getElementById("addLineaComandaButton").addEventListener("click", function() {
+            var container = document.getElementById("lineaComandaContainer");
+        
+            // Create a new form and append it to the container
+            var form = document.createElement("form");
+            form.action = "/lineaComanda/add";
+            form.method = "post";
+            form.className = "form-row";
+        
+            // Add the fields to the form
+            var fields = ["concepto", "descripcion", "estado", "importe", "iva", "total", "producto", "usuario"];
+            fields.forEach(function(field) {
+                var div = document.createElement("div");
+        
+                var label = document.createElement("label");
+                label.for = field;
+                label.textContent = field.charAt(0).toUpperCase() + field.slice(1);
+                div.appendChild(label);
+        
+                var input;
+                if (field === "producto" || field === "usuario") {
+                    input = document.createElement("select");
+                    // You'll need to populate these select options with data from your server
+                } else {
+                    input = document.createElement("input");
+                    if (field === "importe" || field === "iva" || field === "total") {
+                        input.type = "number";
+                    } else {
+                        input.type = "text";
+                    }
+                }
+                input.id = field;
+                input.name = field;
+                div.appendChild(input);
+        
+                form.appendChild(div);
+            });
+        
+            // Add a delete button to the form
+            var deleteButton = document.createElement("button");
+            deleteButton.type = "button";
+            deleteButton.textContent = "Eliminar";
+            deleteButton.addEventListener("click", function() {
+                container.removeChild(form);
+            });
+            form.appendChild(deleteButton);
+        
+            // Add a submit button to the form
+            var submitButton = document.createElement("button");
+            submitButton.type = "submit";
+            submitButton.textContent = "Guardar";
+            form.appendChild(submitButton);
+        
+            container.appendChild(form);
+        });
+        </script>   
 </body>
 </html>
