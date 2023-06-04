@@ -1,5 +1,7 @@
 package avenida.avenida.Controllers;
 import java.util.List;
+
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -71,6 +73,8 @@ public class ComandaController {
     
     @PostMapping("/add")
     public String saveComanda(@ModelAttribute("comanda") Comanda comanda) {
+        double importeComanda = comanda.getLineaComandas().stream().mapToDouble(LineaComanda::getTotal).sum();
+        comanda.setImporteComanda(importeComanda);
         comandaService.save(comanda);
         return "redirect:/comanda/listado";
     }
@@ -85,9 +89,13 @@ public class ComandaController {
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable int id, Model model) {
         Comanda comanda = comandaService.findById(id);
+        Hibernate.initialize(comanda.getLineaComandas());
         List<LineaComanda> lineasComanda = lineaComandaService.findByComandaId(id);
         model.addAttribute("lineasComanda", lineasComanda);
         
+        double importeComanda = comanda.getLineaComandas().stream().mapToDouble(LineaComanda::getTotal).sum();
+        comanda.setImporteComanda(importeComanda);
+
         List<Producto> productos = productoService.findAll();
         System.out.println("Productos recuperados: " + productos);
         String productosJson = "[]";
@@ -104,10 +112,12 @@ public class ComandaController {
     }
 
     @PostMapping("/edit/{id}")
-    public String updateComanda(@PathVariable int id, @ModelAttribute("comanda") Comanda comanda) {
-        comandaService.save(comanda); // Asegúrate de que tu método save también puede actualizar
-        return "redirect:/comanda/listado";
-    }
+        public String updateComanda(@PathVariable int id, @ModelAttribute("comanda") Comanda comanda) {
+            double importeComanda = comanda.getLineaComandas().stream().mapToDouble(LineaComanda::getTotal).sum();
+            comanda.setImporteComanda(importeComanda);
+            comandaService.save(comanda);
+            return "redirect:/comanda/listado";
+        }
 
     @GetMapping("/delete/{id}")
     public String deleteComanda(@PathVariable int id) {

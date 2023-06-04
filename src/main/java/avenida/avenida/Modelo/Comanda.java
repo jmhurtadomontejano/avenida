@@ -31,7 +31,7 @@ public class Comanda {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "comanda", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "comanda", fetch = FetchType.EAGER)
     private Set<LineaComanda> lineaComandas = new HashSet<>();    
     
     @ManyToOne
@@ -135,8 +135,14 @@ this.numComensales = numComensales;
     }
 
     public Double getImporteComanda() {
-        return importeComanda;
-    }
+        if (this.lineaComandas != null && !this.lineaComandas.isEmpty()) {
+            return this.lineaComandas.stream()
+                    .mapToDouble(LineaComanda::getTotal)
+                    .sum();
+        } else {
+            return null;
+        }
+    } 
 
     public void setImporteComanda(Double importeComanda) {
         this.importeComanda = importeComanda;
