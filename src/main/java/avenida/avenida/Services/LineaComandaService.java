@@ -26,7 +26,11 @@ public class LineaComandaService {
         } else {
             throw new RuntimeException("Reparación no encontrada con el ID: " + id);
         }
-    }    
+    } 
+    
+    public List<LineaComanda> findByComandaId(int comandaId) {
+        return lineaComandaRepository.findByComandaId(comandaId);
+    }
 
     public LineaComanda save(LineaComanda lineaComanda) {
         return lineaComandaRepository.save(lineaComanda);

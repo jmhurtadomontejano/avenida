@@ -17,6 +17,7 @@ import avenida.avenida.Modelo.Mesa;
 import avenida.avenida.Modelo.Producto;
 import avenida.avenida.Modelo.User;
 import avenida.avenida.Services.ComandaService;
+import avenida.avenida.Services.LineaComandaService;
 import avenida.avenida.Services.MesaService;
 import avenida.avenida.Services.ProductoService;
 import avenida.avenida.Services.UserService;
@@ -35,6 +36,9 @@ public class ComandaController {
 
     @Autowired
     private ProductoService productoService;
+
+    @Autowired
+    private LineaComandaService lineaComandaService;
 
     @GetMapping("/view-add")
     public String addComanda(Model model) {
@@ -81,7 +85,10 @@ public class ComandaController {
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable int id, Model model) {
         Comanda comanda = comandaService.findById(id);
-        List<Producto> productos = productoService.findAll(); // Obtén todos los productos
+        List<LineaComanda> lineasComanda = lineaComandaService.findByComandaId(id);
+        model.addAttribute("lineasComanda", lineasComanda);
+        
+        List<Producto> productos = productoService.findAll();
         System.out.println("Productos recuperados: " + productos);
         String productosJson = "[]";
         ObjectMapper mapper = new ObjectMapper();

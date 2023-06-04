@@ -33,8 +33,34 @@
             </div>
         </div>
     </div>
-    <!-- Aquí puedes agregar más campos para otras propiedades de Comanda -->
-
+    
+    <!-- Lineas de Comanda -->
+    <h3>Lineas de Comanda</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Unidades</th>
+                <th>Concepto</th>
+                <th>Estado</th>
+                <th>Importe</th>
+                <th>IVA</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="lineaComanda : ${lineasComanda}">
+                <td th:text="${lineaComanda.producto.nombre}"></td>
+                <td th:text="${lineaComanda.unidades}"></td>
+                <td th:text="${lineaComanda.concepto}"></td>
+                <td th:text="${lineaComanda.estado}"></td>
+                <td th:text="${lineaComanda.importe}"></td>
+                <td th:text="${lineaComanda.iva}"></td>
+                <td th:text="${lineaComanda.total}"></td>
+            </tr>
+        </tbody>
+    </table>
+    
     <h5>Añadir Líneas de Comanda</h5>
     <div id="lineaComandaContainer">
         <!-- Los formularios se agregarán aquí mediante JavaScript -->
