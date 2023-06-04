@@ -12,7 +12,6 @@ import avenida.avenida.Modelo.LineaComanda;
 import avenida.avenida.Modelo.Comanda;
 import avenida.avenida.Modelo.Producto;
 import avenida.avenida.Modelo.User;
-import avenida.avenida.Repositorios.LineaComandaRepository;
 import avenida.avenida.Services.ComandaService;
 import avenida.avenida.Services.LineaComandaService;
 import avenida.avenida.Services.ProductoService;
@@ -42,36 +41,32 @@ public class LineaComandaController {
         private UserService userService;
     
         @Autowired
-        private LineaComandaRepository lineaComandaRepository;
-    
-        @Autowired
         private ProductoService productoService;
     
 //añadir lineaComanda
-    @PostMapping("/add")
-    public String addLineaComanda(@ModelAttribute LineaComanda lineaComanda, Model model) {
-        if(lineaComanda.getComanda() == null) {
-            // Añadimos un mensaje de error al modelo o realiza alguna acción para manejar este caso
-            model.addAttribute("error", "La comanda es nula");
-            return "nombre-de-tu-vista-de-error";
+        @PostMapping("/add")
+        public String addLineaComanda(@ModelAttribute LineaComanda lineaComanda, @RequestParam("producto.id") int productId) {
+            // Asegúrate de que el producto está presente en la base de datos
+            Producto producto = productoService.findById(productId);
+            if (producto == null) {
+                // Maneja el caso en el que el producto no se encuentra
+                return "redirect:/error";
+            }
+            lineaComanda.setProducto(producto);
+
+            // Asegúrate de que la comanda está presente en la base de datos
+            Comanda comanda = comandaService.findById(lineaComanda.getComanda().getId());
+            if (comanda == null) {
+                // Maneja el caso en que la comanda no se encuentra
+                return "redirect:/error";
+            }
+            lineaComanda.setComanda(comanda);
+
+            // Ahora puedes guardar la LineaComanda
+            lineaComandaService.save(lineaComanda);
+
+            return "redirect:/comanda/edit/" + lineaComanda.getComanda().getId();
         }
-
-        Comanda comanda = comandaService.findById(lineaComanda.getComanda().getId());
-
-        // Configuramos la comanda en la LineaComanda
-        lineaComanda.setComanda(comanda);
-        lineaComandaService.save(lineaComanda);
-
-        // Añadimos la nueva LineaComanda al modelo para que se pueda acceder a ella en la vista
-        model.addAttribute("lineaComanda", lineaComanda);
-        
-        // Añadimos una nueva LineaComanda al modelo para el formulario de la próxima entrada
-        model.addAttribute("nuevaLineaComanda", new LineaComanda());
-
-        // Devolvemos la vista comanda-view-edit, que se actualizará con la nueva LineaComanda
-        return "views/Comanda/comanda-view-edit";
-    }
-
 
 // cargar editar lineaComanda
         @GetMapping("/edit/{id}")

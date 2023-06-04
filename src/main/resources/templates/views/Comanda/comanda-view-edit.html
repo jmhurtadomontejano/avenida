@@ -42,24 +42,21 @@
     <button type="button" id="addLineaComandaButton" class="btn btn-primary">Añadir Línea de Comanda</button>
     <a th:href="@{/comanda/delete/{id}(id=${comanda.id})}" class="btn btn-danger">Eliminar</a>
     <style>
-        .form-row {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-    
-        .form-row div {
-            flex: 1;
-        }
+  
     </style>
     
     <script th:inline="javascript">
-        function createForm(fields, productos) {
+       function createForm(fields, productos, comandaId) {
             var form = document.createElement("form");
             form.action = "/lineaComanda/add";
             form.method = "post";
             form.className = "form-row";
+            // Aquí creamos y agregamos el campo oculto con el ID de la comanda al formulario.
+            var hiddenInput = document.createElement("input");
+            hiddenInput.type = "hidden";
+            hiddenInput.name = "comanda.id";
+            hiddenInput.value = comandaId;
+            form.appendChild(hiddenInput);
             fields.forEach(function (field) {
                 form.appendChild(createFieldDiv(field, productos));
             });
@@ -73,10 +70,14 @@
             var label = createLabel(field);
             div.appendChild(label);
             var input = (field === "producto") ? createProductSelect(productos) : createInput(field);
+            // Asegurarse de que el select tenga el nombre correcto
+            if (field === "producto") {
+                input.name = "producto.id";
+            }
             div.appendChild(input);
             return div;
         }
-    
+
         function createLabel(field) {
             var label = document.createElement("label");
             label.for = field;
@@ -119,7 +120,6 @@
                     importeInput.value = precio; // Actualiza el valor del campo de importe
                 }
             });
-
             return select;
         }
 
@@ -178,7 +178,8 @@
         document.getElementById("addLineaComandaButton").addEventListener("click", function () {
             var container = document.getElementById("lineaComandaContainer");
             var fields = ["producto", "unidades", "concepto", "estado", "importe", "iva", "total"];
-            var form = createForm(fields, productos);
+            var comandaId = document.querySelector('input[name="id"]').value;  // Obtenemos el ID de la comanda
+            var form = createForm(fields, productos, comandaId);  // Pasamos el ID de la comanda
             container.appendChild(form);
 
             var deleteButton = createButton("button", "Eliminar", "btn btn-danger");

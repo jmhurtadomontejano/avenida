@@ -38,11 +38,11 @@ public class ComandaController {
 
     @GetMapping("/view-add")
     public String addComanda(Model model) {
-        // Recuperar todos los objetos necesarios del servicio
+    // Recuperar todos los objetos necesarios del servicio
         List<Mesa> mesas = mesaService.findAll();
         List<User> users = userService.findAll();
-        List<Producto> productos = productoService.findAll();
-        // Crear una nueva comanda y una nueva línea de comanda y vincularlas
+    
+    // Crear una nueva comanda y una nueva línea de comanda y vincularlas
         Comanda comanda = new Comanda();
         comanda.setDate(new java.util.Date());
         comanda.setHour(java.time.LocalTime.now());
@@ -50,13 +50,13 @@ public class ComandaController {
         lineaComanda.setComanda(comanda);
         comanda.getLineaComandas().add(lineaComanda);
 
-        // Añadir todos los atributos necesarios al modelo
+    // Añadir todos los atributos necesarios al modelo
         model.addAttribute("mesas", mesas);
         model.addAttribute("users", users);
         model.addAttribute("comanda", comanda);
         model.addAttribute("lineaComanda", lineaComanda);
     
-        // Obtén la mesa seleccionada si existe
+    // Obtén la mesa seleccionada si existe
         Mesa selectedMesa = null;
         if (comanda.getMesa() != null) {
             selectedMesa = mesaService.findById(comanda.getMesa().getId());

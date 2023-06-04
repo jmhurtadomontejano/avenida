@@ -17,7 +17,7 @@ public class ComandaService {
     // guardar comandas
     public Comanda save(Comanda comanda) {
         for (LineaComanda lineaComanda : comanda.getLineaComandas()) {
-            // Aquí puedes realizar cualquier validación o configuración adicional en cada LineaComanda
+            // Aquí podemos realizar cualquier validación o configuración adicional en cada LineaComanda
         }
         return comandaRepository.save(comanda); // Uso la instancia inyectada para llamar al método save
     }
