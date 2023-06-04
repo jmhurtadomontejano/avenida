@@ -97,7 +97,7 @@
                     select.appendChild(option);
                 });
             } else {
-                console.log('No productos available.'); // debug line
+                console.log('No hay productos available.'); // debug line
             }
             return select;
         }
@@ -122,7 +122,7 @@
         document.addEventListener("DOMContentLoaded", function() {
             var productos = [];
             try {
-                productos = JSON.parse(/*[[${productosJson}]]*/);
+                productos = JSON.parse(/*[[${productosJson}]]*/'[]');
                 console.log('Productos parseados:', productos);
             } catch (error) {
                 console.error("Error parsing productosJson:", error);

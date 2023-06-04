@@ -10,10 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-//bicicleta
+
 import java.util.List;
 
-   
+ //ProductoController  
     @Controller
     @RequestMapping("/producto")
     public class ProductoController {
@@ -38,17 +38,6 @@ import java.util.List;
         // Redirigir a la lista de productos
         return "/views/Producto/agregarProducto";
     }
-   //guardar producto
-  /*  @PostMapping("/producto/agregaProducto")
-   public String saveProducto(@ModelAttribute("newProducto") Producto newProducto) {
-       // Guardar un nuevo producto
-       ProductoService.save(newProducto);
-       newProducto.setNombre(newProducto.getNombre());
-       // Redirigir a la lista de mesas
-       return "redirect:/producto/listado-producto";
-   }*/
-  
-
 
    @PostMapping("/agregaProducto")
    public String saveProducto(@ModelAttribute("newProducto") Producto newProducto) {
@@ -57,7 +46,6 @@ import java.util.List;
        // Redirigir a la lista de mesas
        return "redirect:/producto/listado-producto";
    }
-   
 
     // Obtener todos los productos (GET)
         @GetMapping
@@ -73,13 +61,6 @@ import java.util.List;
             return new ResponseEntity<>(producto, HttpStatus.OK);
         }
     
-    // Obtener producto por nombre (GET)
-        @GetMapping("/nombre")
-        public ResponseEntity<List<Producto>> getProductosPorNombre(@RequestParam String nombre) {
-            List<Producto> productos = productoService.findByNombre(nombre);
-            return new ResponseEntity<>(productos, HttpStatus.OK);
-        }
-    
     //Obtener producto para editar en html
         @GetMapping("/edit-producto/{id}")
         public String verproductoDetalle(@PathVariable int id, Model model) {
@@ -87,26 +68,13 @@ import java.util.List;
             model.addAttribute("producto", producto);
             return "/views/Producto/edit-producto";
         }
-    
-   /*  // Crear un nuevo producto (POST)
-        @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Producto> createProducto(@ModelAttribute Producto producto) {
-        Producto newProducto = ProductoService.save(producto);
-        return new ResponseEntity<>(newProducto, HttpStatus.CREATED);
-    }  
-    */
+
     @PostMapping("/edit-producto/{id}")
     public String updateProducto(@PathVariable int id, @ModelAttribute("producto") Producto producto) {
         producto.setId(id); // Establece el ID del producto
         productoService.save(producto); // Guarda los cambios en el producto
         return "redirect:/producto/listado-producto";
     }
-    // Actualizar un producto existente (PUT)
-       /*  @PutMapping("/{id}")
-        public ResponseEntity<Producto> updateProducto(@PathVariable int id, @RequestBody Producto producto) {
-            Producto updatedProducto = productoService.update(id, producto);
-            return new ResponseEntity<>(updatedProducto, HttpStatus.OK);
-        }*/
     
     // Eliminar una producto por ID (DELETE)
         @PostMapping("/delete/{id}")

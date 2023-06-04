@@ -3,6 +3,7 @@ package avenida.avenida.Modelo;
 import javax.persistence.Id;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.JoinColumn;
@@ -22,7 +23,7 @@ public class LineaComanda {
     @JoinColumn(name = "id_comanda", nullable = false)
     private Comanda comanda;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_producto", nullable = false)
     private Producto producto;
 

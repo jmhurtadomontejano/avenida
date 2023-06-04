@@ -65,13 +65,7 @@ public class ProductoService {
         productoRepository.delete(producto);
     }
 
-    public Producto getProductoById(int productoId) {
-        return null;
-    }
 
-    public List<Producto> findByNombre(String nombre) {
-        return null;
-    }
 
 
 }

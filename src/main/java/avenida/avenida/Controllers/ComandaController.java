@@ -11,10 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.core.JsonProcessingException;
-
-
 import avenida.avenida.Modelo.Comanda;
 import avenida.avenida.Modelo.LineaComanda;
 import avenida.avenida.Modelo.Mesa;
@@ -40,9 +36,6 @@ public class ComandaController {
     @Autowired
     private ProductoService productoService;
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
     @GetMapping("/view-add")
     public String addComanda(Model model) {
         // Recuperar todos los objetos necesarios del servicio
@@ -57,21 +50,9 @@ public class ComandaController {
         lineaComanda.setComanda(comanda);
         comanda.getLineaComandas().add(lineaComanda);
 
-        // Intentar convertir la lista de productos a una cadena JSON
-        ObjectMapper mapper = new ObjectMapper();
-        String productosJson = "[]";
-        try {
-            productosJson = mapper.writeValueAsString(productos);
-            System.out.println("Productos en JSON: " + productosJson);
-            model.addAttribute("productosJson", productosJson);
-        } catch (JsonProcessingException e) {
-            System.err.println("Error al convertir productos a JSON: " + e.getMessage());
-        }
-
         // Añadir todos los atributos necesarios al modelo
         model.addAttribute("mesas", mesas);
         model.addAttribute("users", users);
-        model.addAttribute("productosJson", productosJson);
         model.addAttribute("comanda", comanda);
         model.addAttribute("lineaComanda", lineaComanda);
     
@@ -100,7 +81,18 @@ public class ComandaController {
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable int id, Model model) {
         Comanda comanda = comandaService.findById(id);
+        List<Producto> productos = productoService.findAll(); // Obtén todos los productos
+        System.out.println("Productos recuperados: " + productos);
+        String productosJson = "[]";
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            productosJson = mapper.writeValueAsString(productos);
+        } catch (JsonProcessingException e) {
+            System.err.println("Error al convertir productos a JSON: " + e.getMessage());
+        }
         model.addAttribute("comanda", comanda);
+        model.addAttribute("productos", productos);
+        model.addAttribute("productosJson", productosJson);
         return "views/Comanda/comanda-view-edit";
     }
 
@@ -114,6 +106,6 @@ public class ComandaController {
     public String deleteComanda(@PathVariable int id) {
     comandaService.delete(id);
     return "redirect:/comanda/listado";
-}
+    }
 
 }
