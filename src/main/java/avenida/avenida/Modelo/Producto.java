@@ -13,6 +13,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 //producto
 @Table(name = "producto")
 @Entity
@@ -29,9 +31,10 @@ public class Producto {
     @Column(name = "precio")
     private double precio;
 
-    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<LineaComanda> lineaComanda = new ArrayList<>();
-
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "producto")
+    @JsonIgnore
+    private List<LineaComanda> lineaComanda;
+    
 
     //constructores
     public Producto(int id, String nombre, double precio, List<LineaComanda> lineaComanda) {
@@ -86,10 +89,12 @@ public class Producto {
     }
 
 //ToString
-  
 @Override
 public String toString() {
-    return "Producto [id=" + id + ", nombre=" + nombre + ", precio=" + precio + ", lineaComanda=" + lineaComanda
-            + "]";
-}   
+    return "Producto [id=" + id 
+            + ", nombre=" + nombre 
+            + ", precio=" + precio
+            + ", numeroLineasComanda=" + (lineaComanda != null ? lineaComanda.size() : "0") + "]";
+}
+
 }

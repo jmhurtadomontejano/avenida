@@ -167,27 +167,27 @@
         }
     
         document.addEventListener("DOMContentLoaded", function() {
-            var productos = [];
-            try {
-                productos = JSON.parse(/*[[${productosJson}]]*/'[]');
-                console.log('Productos parseados:', productos);
-            } catch (error) {
-                console.error("Error parsing productosJson:", error);
-            }
-    
-            document.getElementById("addLineaComandaButton").addEventListener("click", function () {
-                var container = document.getElementById("lineaComandaContainer");
-                var fields = ["producto", "unidades", "concepto", "estado", "importe", "iva", "total"];
-                var form = createForm(fields, productos);
-                container.appendChild(form);
-    
-                var deleteButton = createButton("button", "Eliminar", "btn btn-danger");
-                deleteButton.addEventListener("click", function () {
-                    container.removeChild(form);
-                });
-                form.appendChild(deleteButton);
+        var productos = [];
+        try {
+            productos = JSON.parse(/*[[${productosJson}]]*/'[]');
+            console.log('Productos parseados:', productos);
+        } catch (error) {
+            console.error("Error parsing productosJson:", error);
+        }
+
+        document.getElementById("addLineaComandaButton").addEventListener("click", function () {
+            var container = document.getElementById("lineaComandaContainer");
+            var fields = ["producto", "unidades", "concepto", "estado", "importe", "iva", "total"];
+            var form = createForm(fields, productos);
+            container.appendChild(form);
+
+            var deleteButton = createButton("button", "Eliminar", "btn btn-danger");
+            deleteButton.addEventListener("click", function () {
+                container.removeChild(form);
             });
+            form.appendChild(deleteButton);
         });
+    });
     </script>
     
 </body>

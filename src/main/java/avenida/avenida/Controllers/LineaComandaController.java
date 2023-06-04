@@ -48,15 +48,30 @@ public class LineaComandaController {
         private ProductoService productoService;
     
 //añadir lineaComanda
-        @PostMapping("/add")
-        public String addLineaComanda(@ModelAttribute LineaComanda lineaComanda) {
-            Comanda comanda = comandaService.findById(lineaComanda.getComanda().getId());
-
-            // Configura la comanda en la LineaComanda
-            lineaComanda.setComanda(comanda);
-            lineaComandaService.save(lineaComanda);
-            return "redirect:/lineaComanda/listado-lineaComanda";
+    @PostMapping("/add")
+    public String addLineaComanda(@ModelAttribute LineaComanda lineaComanda, Model model) {
+        if(lineaComanda.getComanda() == null) {
+            // Añadimos un mensaje de error al modelo o realiza alguna acción para manejar este caso
+            model.addAttribute("error", "La comanda es nula");
+            return "nombre-de-tu-vista-de-error";
         }
+
+        Comanda comanda = comandaService.findById(lineaComanda.getComanda().getId());
+
+        // Configuramos la comanda en la LineaComanda
+        lineaComanda.setComanda(comanda);
+        lineaComandaService.save(lineaComanda);
+
+        // Añadimos la nueva LineaComanda al modelo para que se pueda acceder a ella en la vista
+        model.addAttribute("lineaComanda", lineaComanda);
+        
+        // Añadimos una nueva LineaComanda al modelo para el formulario de la próxima entrada
+        model.addAttribute("nuevaLineaComanda", new LineaComanda());
+
+        // Devolvemos la vista comanda-view-edit, que se actualizará con la nueva LineaComanda
+        return "views/Comanda/comanda-view-edit";
+    }
+
 
 // cargar editar lineaComanda
         @GetMapping("/edit/{id}")

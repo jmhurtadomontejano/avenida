@@ -24,6 +24,7 @@ public class ProductoService {
     // Encontrar todas las productos
     public List<Producto> findAll() {
         List<Producto> productos = productoRepository.findAll();
+        System.out.println("Productos recuperados: " + productos);
         productos.sort(Comparator.comparing(Producto::getNombre));
         return productos;
     }    
@@ -38,10 +39,8 @@ public class ProductoService {
         }
     }
 
-    // Encontrar una producto por marca
+    // Encontrar una producto por precio
     public List<Producto> findByPrecio(String precio) {
-        // Aquí puedes implementar la lógica para filtrar las productos por marca
-        // Ejemplo: Utilizar un repositorio para buscar las productos con la marca especificada
         return productoRepository.findByPrecio(precio);
     }
 
