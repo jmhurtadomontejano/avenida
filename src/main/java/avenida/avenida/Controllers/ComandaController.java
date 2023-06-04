@@ -59,14 +59,14 @@ public class ComandaController {
 
         // Intentar convertir la lista de productos a una cadena JSON
         ObjectMapper mapper = new ObjectMapper();
-       // ArrayNode productosJson = mapper.valueToTree(productos);
-       String productosJson = null;
-            try {
-                productosJson = mapper.writeValueAsString(productos);
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
-        System.out.println("Productos en JSON: " + productosJson);
+        String productosJson = "[]";
+        try {
+            productosJson = mapper.writeValueAsString(productos);
+            System.out.println("Productos en JSON: " + productosJson);
+            model.addAttribute("productosJson", productosJson);
+        } catch (JsonProcessingException e) {
+            System.err.println("Error al convertir productos a JSON: " + e.getMessage());
+        }
 
         // Añadir todos los atributos necesarios al modelo
         model.addAttribute("mesas", mesas);

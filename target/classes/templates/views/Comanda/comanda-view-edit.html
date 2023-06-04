@@ -48,87 +48,102 @@
             align-items: center;
             margin-bottom: 10px;
         }
-
+    
         .form-row div {
             flex: 1;
         }
     </style>
-<script th:inline="javascript">
-    /*<![CDATA[*/
-    var productos = [];
-    try {
-        productos = JSON.parse(/*[[${productosJson}]]*/ '[]');
-    } catch (error) {
-        console.error("Error parsing productosJson:", error);
-    }
-    /*]]>*/
-</script>
-
-<script>
-    console.log(productos);
-</script>
-
-    <script>
-        document.getElementById("addLineaComandaButton").addEventListener("click", function () {
-            var container = document.getElementById("lineaComandaContainer");
-
-            // Crear un nuevo formulario y agregarlo al contenedor
+    
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        function createForm(fields, productos) {
             var form = document.createElement("form");
             form.action = "/lineaComanda/add";
             form.method = "post";
             form.className = "form-row";
-
-            // Agregar los campos al formulario
-            var fields = ["producto", "unidades", "concepto", "estado", "importe", "iva", "total"];
             fields.forEach(function (field) {
-                var div = document.createElement("div");
-
-                var label = document.createElement("label");
-                label.for = field;
-                label.textContent = field.charAt(0).toUpperCase() + field.slice(1);
-                div.appendChild(label);
-
-                var input;
-                if (field === "producto") {
-                    input = document.createElement("select");
-                    // Necesitarás llenar estas opciones del select con datos de tu servidor
-                    input.className = "form-control";
-                } else {
-                    input = document.createElement("input");
-                    if (field === "importe" || field === "iva" || field === "total") {
-                        input.type = "number";
-                    } else {
-                        input.type = "text";
-                    }
-                    input.className = "form-control";
-                }
-                input.id = field;
-                input.name = field;
-                div.appendChild(input);
-
-                form.appendChild(div);
+                form.appendChild(createFieldDiv(field, productos));
             });
-
-            // Agregar un botón de enviar al formulario
-            var submitButton = document.createElement("button");
-            submitButton.type = "submit";
-            submitButton.textContent = "Guardar";
-            submitButton.className = "btn btn-primary";
+            var submitButton = createButton("submit", "Guardar", "btn btn-primary");
             form.appendChild(submitButton);
-
-            container.appendChild(form);
-            
-            // Agregar un botón de eliminar al formulario
-            var deleteButton = document.createElement("button");
-            deleteButton.type = "button";
-            deleteButton.textContent = "Eliminar";
-            deleteButton.className = "btn btn-danger";
-            deleteButton.addEventListener("click", function () {
-                container.removeChild(form);
+            return form;
+        }
+    
+        function createFieldDiv(field, productos) {
+            var div = document.createElement("div");
+            var label = createLabel(field);
+            div.appendChild(label);
+            var input = (field === "producto") ? createProductSelect(productos) : createInput(field);
+            div.appendChild(input);
+            return div;
+        }
+    
+        function createLabel(field) {
+            var label = document.createElement("label");
+            label.for = field;
+            label.textContent = field.charAt(0).toUpperCase() + field.slice(1);
+            return label;
+        }
+    
+        function createProductSelect(productos) {
+            var select = document.createElement("select");
+            select.className = "form-control";
+            if (productos && productos.length > 0)  {
+                productos.forEach(function(producto) {
+                    console.log('Creating option for producto:', producto); // debug line
+                    var option = document.createElement("option");
+                    option.value = producto.id;
+                    option.textContent = producto.nombre;
+                    select.appendChild(option);
+                });
+            } else {
+                console.log('No productos available.'); // debug line
+            }
+            return select;
+        }
+    
+        function createInput(field) {
+            var input = document.createElement("input");
+            input.type = (field === "importe" || field === "iva" || field === "total") ? "number" : "text";
+            input.className = "form-control";
+            input.id = field;
+            input.name = field;
+            return input;
+        }
+    
+        function createButton(type, textContent, className) {
+            var button = document.createElement("button");
+            button.type = type;
+            button.textContent = textContent;
+            button.className = className;
+            return button;
+        }
+    
+        document.addEventListener("DOMContentLoaded", function() {
+            var productos = [];
+            try {
+                productos = JSON.parse(/*[[${productosJson}]]*/);
+                console.log('Productos parseados:', productos);
+            } catch (error) {
+                console.error("Error parsing productosJson:", error);
+            }
+    
+            document.getElementById("addLineaComandaButton").addEventListener("click", function () {
+                var container = document.getElementById("lineaComandaContainer");
+                var fields = ["producto", "unidades", "concepto", "estado", "importe", "iva", "total"];
+                var form = createForm(fields, productos);
+                container.appendChild(form);
+    
+                var deleteButton = createButton("button", "Eliminar", "btn btn-danger");
+                deleteButton.addEventListener("click", function () {
+                    container.removeChild(form);
+                });
+                form.appendChild(deleteButton);
             });
-            form.appendChild(deleteButton);
         });
+        /*]]>*/
     </script>
+    
 
 </body>
 </html>

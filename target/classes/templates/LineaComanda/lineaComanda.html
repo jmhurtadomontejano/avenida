@@ -1,11 +1,12 @@
 <!-- lineasComanda.html -->
-<div class="form-row align-items-center">
+<div class="form-row align-items-center" th:fragment="lineaComanda">
     <form action="/lineaComanda/add" method="post" class="form-inline" th:object="${lineaComanda}">
         <div class="col-auto">
             <label for="producto">Producto</label>
-            <select id="producto" name="producto" class="form-control" th:field="*{producto}">
-                <option th:each="producto : ${productos}" th:value="${producto.id}" th:text="${producto.nombre}"></option>
+            <select id="productoId" name="productoId" class="form-control" th:field="*{productoId}">
+                <option th:each="producto : ${productos}" th:value="${producto.id}" th:text="${producto.nombre}" th:selected="${producto.id.equals(lineaComanda.productoId)}"></option>
             </select>
+                    
         </div>
 
         <div class="col-auto">
