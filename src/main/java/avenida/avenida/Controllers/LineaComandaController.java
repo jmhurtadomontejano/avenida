@@ -47,17 +47,18 @@ public class LineaComandaController {
         @Autowired
         private ProductoService productoService;
     
-        @PostMapping("/lineaComanda")
-        public String createLineaComanda(@ModelAttribute LineaComanda lineaComanda) {
-            Comanda comanda = comandaService.findById(lineaComanda.getComanda().getId());  // Usar la instancia inyectada para llamar al método
-    
+//añadir lineaComanda
+        @PostMapping("/add")
+        public String addLineaComanda(@ModelAttribute LineaComanda lineaComanda) {
+            Comanda comanda = comandaService.findById(lineaComanda.getComanda().getId());
+
             // Configura la comanda en la LineaComanda
             lineaComanda.setComanda(comanda);
             lineaComandaService.save(lineaComanda);
-            return "redirect:/LineaComanda/listado-lineaComanda";
-        } 
-    
-        // cargar editar lineaComanda
+            return "redirect:/lineaComanda/listado-lineaComanda";
+        }
+
+// cargar editar lineaComanda
         @GetMapping("/edit/{id}")
         public String showEditLineaComandaForm(@PathVariable("id") int id, Model model) {
             try {
@@ -75,24 +76,14 @@ public class LineaComandaController {
             } 
         }
     
-        // añadir lineaComanda
-        @PostMapping("/lineaComanda/lineaComanda")
-        public String createLineaComanda(@ModelAttribute LineaComanda lineaComanda, BindingResult result) {
-            if (result.hasErrors()) {
-                return "lineaComanda";
-            }
-            lineaComandaRepository.save(lineaComanda);
-            return "success";
-        }
     
-        // editar lineaComanda
+// editar lineaComanda
         @PostMapping("/update-post")
         public String updateLineaComanda(@ModelAttribute("lineaComanda") LineaComanda lineaComanda, BindingResult result, Model model) {
             if (result.hasErrors()) {
                 // Manejar errores de validación aquí
                 return "views/LineaComanda/lineaComanda-edit";
             }
-    
             lineaComandaService.save(lineaComanda);
     
             return "redirect:/LineaComanda/listado-lineaComanda";
